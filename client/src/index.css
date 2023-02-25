@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&display=swap');
+
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+body::-webkit-scrollbar {
+	width: 0.3em;
+}
+
+body::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+	background-color: rgb(43, 41, 41);
+	outline: 1px solid rgb(169, 173, 177);
+}
+
+body {
+	font-family: 'Poppins', sans-serif;
+	color: #333;
+	background-color: #EEEEEE;
+}
+
+img {
+	max-width: 100%;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	letter-spacing: 1.1px;
+}
+
+
+main {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+}
+
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem 2rem;
+	/* max-width: 1100px; */
+	margin: 0 auto;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+}
+
+
+
+header>ul {
+	display: flex;
+	gap: 2rem;
+}
+
+.link {
+	-webkit-tap-highlight-color: transparent
+}
+
+.logo {
+	font-size: 1.5rem;
+	font-weight: 500;
+
+}
+
+.post-section {
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minMax(min(100%, 250px), 2fr));
+	gap: 1rem;
+	/* margin-top: 3rem; */
+}
+
+
+.post {
+	margin-bottom: 1rem;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	overflow: hidden;
+}
+
+
+.texts {
+	padding: 1rem;
+}
+
+.texts>h2 {
+	font-size: 1.2rem;
+	color: black;
+	margin-bottom: 0.5rem;
+}
+
+.texts>p {
+	font-size: 0.9rem;
+	line-height: 1.2;
+}
+
+.info {
+	margin-bottom: 0.5rem;
+	display: grid;
+}
+
+form {
+	display: grid;
+	max-width: 400px;
+	margin: 0 auto;
+	gap: 1rem;
+}
+
+form>h1 {
+	font-size: 2.1rem;
+	text-decoration: underline;
+	font-weight: 500;
+	font-style: italic;
+	letter-spacing: 1.1;
+	text-align: center;
+}
+
+input {
+	border: 1px solid #3333335d;
+	outline: #333;
+	border-radius: 10px;
+	padding: 1rem;
+	font-size: 1rem;
+	font-family: inherit;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+input:focus {
+	border: 1px solid #333333f8;
+}
+
+.btn-container {
+	display: grid;
+	justify-content: center;
+}
+
+/* CSS */
+.button-28 {
+	appearance: none;
+	background-color: transparent;
+	border: 2px solid #1A1A1A;
+	border-radius: 15px;
+	box-sizing: border-box;
+	color: #3B3B3B;
+	cursor: pointer;
+	display: inline-block;
+	font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 16px;
+	font-weight: 600;
+	line-height: normal;
+	margin: 0;
+	min-height: 10px;
+	min-width: 0;
+	outline: none;
+	padding: 10px 30px;
+	text-align: center;
+	text-decoration: none;
+	transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	width: 100%;
+	will-change: transform;
+}
+
+
+.button-28:hover {
+	color: #fff;
+	background-color: #1A1A1A;
+	box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+	transform: translateY(-2px);
+}
+
+.button-28:active {
+	box-shadow: none;
+	transform: translateY(0);
+}
