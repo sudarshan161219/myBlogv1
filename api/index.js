@@ -1,19 +1,40 @@
 const express = require('express')
-const cors = require('cors')
-
 const app = express();
-const port = 4000
+const cors = require('cors')
+const connectDB = require('./db/connect')
+require("dotenv").config();
+const userModel = require('./models/user')
+
+const port = process.env.PORT || 4000
 app.use(cors())
 app.use(express.json())
 
-app.post('/register', (req, res) => {
-    const  {userName, password} = req.body
-    res.json({requestData:{userName, password}})
+
+// data coming from Client --> src --> components --> register.jsx
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body
+        const userDoc = await userModel.create({
+            username,
+            password
+        })
+        res.json(userDoc)
+    } catch (error) {
+        res.status(400).json({msg: {error}})
+    }
+
 })
 
-// app.get('/register', (req, res) => {
-//     res.json('test server')
-// })
 
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGO_URI)
+        console.log('connected to Db....');
+        app.listen(port, console.log(`server is listening on port ${port}....`))
+    } catch (error) {
+        console.log(error);
+    }
 
-app.listen(port, console.log(`server is listening on port ${port}....`))
+}
+
+start()

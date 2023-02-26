@@ -6,9 +6,14 @@ import Nav from "./components/nav";
 import Login from "./components/login";
 import Register from "./components/register";
 import Layout from "./components/Layout";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const App = () => {
   return (
     <>
+     <ToastContainer />
       <Nav />
       <Routes>
         <Route path='/' element={<Layout />} />

@@ -1,18 +1,40 @@
 import React, { useState } from "react";
+import { toast } from 'react-toastify';
+
+
 
 const register = () => {
-  const [userName, setUserName] = useState("");
+  const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:4000/register", {
-      method: "POST",
-      body: JSON.stringify({ userName, password }),
-      headers: { "content-Type": "application/json" },
-    });
-    setUserName('')
-    setPassword('')
+    setUserName("");
+    setPassword("");
+
+    try {
+      
+   const response =   await fetch("http://localhost:4000/register", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+        headers: { "content-Type": "application/json" },
+      });
+
+      if(response.status === 200){
+        toast.success(`success, user registered`, {
+          position: toast.POSITION.TOP_RIGHT
+      });
+      }else{
+        toast.error(`Opps!!, username: ${username} already taken`, {
+          position: toast.POSITION.TOP_RIGHT
+      });
+      }
+     
+    } catch (error) {
+      console.log(error);
+    }
+
+  
   };
 
   const handleUserName = (e) => {
@@ -30,7 +52,7 @@ const register = () => {
         <input
           type='text'
           placeholder='username'
-          value={userName}
+          value={username}
           onChange={handleUserName}
         />
         <input
