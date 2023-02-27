@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Navigate} from 'react-router-dom'
 import { toast } from 'react-toastify';
 
 
@@ -6,6 +7,7 @@ import { toast } from 'react-toastify';
 const register = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +23,7 @@ const register = () => {
       });
 
       if(response.status === 200){
-        toast.success(`success, user registered`, {
-          position: toast.POSITION.TOP_RIGHT
-      });
+        setRedirect(true)
       }else{
         toast.error(`Opps!!, username: ${username} already taken`, {
           position: toast.POSITION.TOP_RIGHT
@@ -44,6 +44,11 @@ const register = () => {
   const handleUserPassword = (e) => {
     setPassword(e.target.value);
   };
+
+  if(redirect) {
+    return <Navigate to={'/login'} />
+    }
+    
 
   return (
     <main>

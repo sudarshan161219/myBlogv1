@@ -309,3 +309,23 @@ input:focus {
 	box-shadow: none;
 	transform: translateY(0);
 }
+
+.profile{
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+
+.profile > h1{
+	font-size: 1.2rem;
+	font-weight: 500;
+	text-transform: capitalize;
+	cursor: pointer;
+}
+
+.profile > .profile-link {
+	font-size: 1rem;
+	font-weight: 400;
+	cursor: pointer;
+}

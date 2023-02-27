@@ -6,6 +6,8 @@ require("dotenv").config();
 const bcrypt = require('bcryptjs');
 const userModel = require('./models/user');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
+
 
 const privateKey = 'randomString'
 const salt = bcrypt.genSaltSync(10)
@@ -19,7 +21,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use(express.json())
-
+app.use(cookieParser())
 
 // data coming from Client --> src --> components --> register.jsx
 // adding users username and password to database
@@ -44,25 +46,31 @@ app.post('/login', async (req, res) => {
         const { username, password } = req.body
         const userDoc = await userModel.findOne({ username })
         const passOk = bcrypt.compareSync(password, userDoc.password)
-        res.json(passOk)
         if (passOk) {
             // user logged in
-            // res.json(passOk)
             jwt.sign({ username, id: userDoc._id }, privateKey, {}, (err, token) => {
-                if (!err) {
-                    res.cookie('token', token).json('ok')
-                } else {
-                    console.log(err);
-                }
+                if (err) throw err;
+                res.cookie('token', token).status(200).json({ success: true});
             })
+            console.log('sucess');
         } else {
-            res.status(400).json({ msg: 'bad user credentials' })
+            res.status(400).json('bad user credentials')
         }
     } catch (error) {
-        res.status(400).json({ msg: { error } })
+        console.log(error);
     }
+
+
 })
 
+
+app.get('/profile', (req, res) => {
+    const {token} = req.cookies
+    jwt.verify(token, privateKey, (err, decoded) => {
+        if(err) throw err;
+        res.json(decoded).status(200).json({ success: true});
+    })
+})
 
 
 const start = async () => {
