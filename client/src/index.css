@@ -233,11 +233,21 @@ header>ul {
 	display: grid;
 }
 
-form {
+.loginAndRegister {
 	display: grid;
 	max-width: 400px;
 	margin: 0 auto;
 	gap: 1rem;
+	
+}
+
+
+
+.creatNewPost > input{
+	/* display: grid; */
+	/* margin: 0 auto; */
+	/* gap: 1rem; */
+	margin: 1rem;
 }
 
 form>h1 {
@@ -310,22 +320,47 @@ input:focus {
 	transform: translateY(0);
 }
 
-.profile{
+.profile {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
 }
 
 
-.profile > h1{
+.profile>h1 {
 	font-size: 1.2rem;
 	font-weight: 500;
 	text-transform: capitalize;
 	cursor: pointer;
 }
 
-.profile > .profile-link {
+.profile>.profile-link {
 	font-size: 1rem;
 	font-weight: 400;
 	cursor: pointer;
 }
+
+.profile>button {
+	cursor: pointer;
+	border-radius: 10px;
+	font-size: 1.2rem;
+	border: 1px solid gray;
+	color: gray;
+}
+
+
+.profile>button:hover {
+	border: 1px solid rgb(0, 0, 0);
+	color: rgb(0, 0, 0);
+	box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+	transition: ease 0.3s;
+}
+
+.quill{
+	flex-wrap: wrap;
+}
+
+.create-post{
+	margin-top: 1rem;
+}
+

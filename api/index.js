@@ -6,7 +6,8 @@ require("dotenv").config();
 const bcrypt = require('bcryptjs');
 const userModel = require('./models/user');
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const { get } = require('mongoose');
 
 
 const privateKey = 'randomString'
@@ -50,7 +51,10 @@ app.post('/login', async (req, res) => {
             // user logged in
             jwt.sign({ username, id: userDoc._id }, privateKey, {}, (err, token) => {
                 if (err) throw err;
-                res.cookie('token', token).status(200).json({ success: true});
+                res.cookie('token', token).status(200).json({
+                    id:userDoc._id,
+                    username
+                });
             })
             console.log('sucess');
         } else {
@@ -72,6 +76,10 @@ app.get('/profile', (req, res) => {
     })
 })
 
+
+app.post('/logout', (req, res) => {
+res.cookie('token', '').status(200).json({ success: true});
+})
 
 const start = async () => {
     try {

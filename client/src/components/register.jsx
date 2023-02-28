@@ -52,7 +52,7 @@ const register = () => {
 
   return (
     <main>
-      <form onSubmit={handleSubmit}>
+      <form className="loginAndRegister" onSubmit={handleSubmit}>
         <h1>Register</h1>
         <input
           type='text'

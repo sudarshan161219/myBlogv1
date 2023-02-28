@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import {Navigate} from 'react-router-dom'
+import React, { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { UserContext } from "../context/UserContex";
 const login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const { setUserInfo } = useContext(UserContext);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +23,10 @@ const login = () => {
       });
 
       if (response.status === 200) {
-        setRedirect(true);
+        response.json().then((userInfo) => {
+          setUserInfo(userInfo)
+          setRedirect(true);
+        });
       } else {
         toast.error(`Opps!!, Login failed`, {
           position: toast.POSITION.TOP_RIGHT,
@@ -40,13 +45,13 @@ const login = () => {
     setPassword(e.target.value);
   };
 
-if(redirect) {
-return <Navigate to={'/'} />
-}
+  if (redirect) {
+    return <Navigate to={"/"} />;
+  }
 
   return (
     <main>
-      <form onSubmit={handleSubmit}>
+      <form className="loginAndRegister" onSubmit={handleSubmit}>
         <h1>Login</h1>
         <input
           type='text'
