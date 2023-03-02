@@ -41,11 +41,11 @@ const CreatNewPost = () => {
  const [formData, setFormData] = useState({
 title:'',
 summary:'',
-content:'',
+Content: '',
 images:{}
 })
 
-const {title, summary, content,  images} = formData
+const {title, summary, Content,  images} = formData
 
 
   const handleSubmit =  (e) => {
@@ -106,8 +106,13 @@ const {title, summary, content,  images} = formData
     
   };
 
-
-
+const handleChange = (e) => {
+  setFormData((prevState) => ({
+    ...prevState,
+    Content: e
+  }))
+}
+ 
   return (
     <main>
       <form onSubmit={handleSubmit} className='creatNewPost' encType="multipart/form-data">
@@ -140,10 +145,10 @@ const {title, summary, content,  images} = formData
           className='quill'
           theme='snow'
           id="content"
-          value={content}
+          value={Content}
           modules={modules}
           formats={formats}
-          onChange={onMutate}
+          onChange={handleChange }
         />
         <button className='create-post button-28'>Create post</button>
       </form>
