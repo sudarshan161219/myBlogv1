@@ -1,4 +1,5 @@
 const express = require('express')
+const fileUpload = require('express-fileupload')
 const app = express();
 const cors = require('cors')
 const connectDB = require('./db/connect')
@@ -7,8 +8,8 @@ const bcrypt = require('bcryptjs');
 const userModel = require('./models/user');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const multer  = require('multer')
-const uploadMiddleWare = multer({ dest: 'uploads/' })
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/'  })
 // const { get } = require('mongoose');
 
 
@@ -25,7 +26,9 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
-
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+  }));
 // data coming from Client --> src --> components --> register.jsx
 // adding users username and password to database
 app.post('/register', async (req, res) => {
@@ -63,7 +66,7 @@ app.post('/login', async (req, res) => {
 
             const refreshToken = jwt.sign({ username, id: userDoc._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
-            res.cookie('jwtT', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).json({ success: true  });
+            res.cookie('jwtT', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).json({ success: true });
 
 
             // const otherUsers = userModel.User.filter(person => person.username !== userDoc.username)
@@ -93,9 +96,11 @@ app.post('/logout', (req, res) => {
     res.cookie('jwtT', '').status(200).json({ success: true });
 })
 
-app.post('/post', uploadMiddleWare.single('file'),  (req, res) => {
-   res.json(req.files.file)
+app.post('/post', upload.single('image'),  (req, res) => {
+      res.json({files: req.file})
+
 })
+
 
 const start = async () => {
     try {
