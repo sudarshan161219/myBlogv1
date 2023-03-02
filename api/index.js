@@ -1,5 +1,6 @@
 const express = require('express')
-const fileUpload = require('express-fileupload')
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 const app = express();
 const cors = require('cors')
 const connectDB = require('./db/connect')
@@ -8,9 +9,8 @@ const bcrypt = require('bcryptjs');
 const userModel = require('./models/user');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/'  })
-// const { get } = require('mongoose');
+
+
 
 
 
@@ -26,9 +26,9 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
-app.use(fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-  }));
+
+
+
 // data coming from Client --> src --> components --> register.jsx
 // adding users username and password to database
 app.post('/register', async (req, res) => {
@@ -42,7 +42,6 @@ app.post('/register', async (req, res) => {
     } catch (error) {
         res.status(400).json({ msg: { error } })
     }
-
 })
 
 // data coming from Client --> src --> components --> login.jsx
@@ -96,10 +95,11 @@ app.post('/logout', (req, res) => {
     res.cookie('jwtT', '').status(200).json({ success: true });
 })
 
-app.post('/post', upload.single('image'),  (req, res) => {
-      res.json({files: req.file})
-
+app.post('/post', upload.single('file'),  (req, res) => {
+      res.json({files:req.file})
 })
+
+
 
 
 const start = async () => {

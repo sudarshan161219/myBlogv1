@@ -33,77 +33,38 @@ const formats = [
 ];
 
 const CreatNewPost = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    summary: "",
-    Content: "",
-    // image: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   title: "",
+  //   summary: "",
+  //   Content: "",
+  //   // image: "",
+  // });
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
-
-  const { title, summary, Content } = formData;
-  const person = new Object(formData);
-  person.image = files[0]
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setFormData({
-      title: "",
-      summary: "",
-      Content: "",
+    const data = new FormData();
+    data.set("title", title);
+    data.set("summary", summary);
+    data.set("content", content);
+    data.set("file", files[0]);
+
+    setTitle("");
+    setSummary("");
+    setContent("");
+    setFiles("");
+
+    const response = await fetch("http://localhost:4000/post", {
+      method: "POST",
+      body: data,
     });
 
-    console.log(person);
-
-
-    try {
-      const response = await fetch("http://localhost:4000/post", {
-        method: "POST",
-        body: JSON.stringify(person),
-      });
-      response.json();
-
-      if (response.status === 200) {
-        toast.success(`status 200`, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      } else {
-        toast.error(`Opps!!,`, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onMutate = (e) => {
-    if (!e.target.files) {
-      setFormData((prevState) => ({
-        ...prevState,
-        [e.target.id]: e.target.value,
-      }));
-    }
-
-    // if (e.target.files) {
-    //   setFormData((prevState) => ({
-    //     ...prevState,
-    //     image: e.target.files,
-    //   }));
-    // }
-  };
-
-  const handleChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      Content: e,
-    }));
-  };
-
-  const handleimg = (e) => {
-    setFiles(e.target.files);
+    const dataJson = await response.json();
+    console.log(dataJson);
   };
 
   return (
@@ -111,16 +72,14 @@ const CreatNewPost = () => {
       <form
         onSubmit={handleSubmit}
         className='creatNewPost'
-        // encType='multipart/form-data'
-        // enctype="multipart/form-data"
-        // en
+        encType='multipart/form-data'
       >
         <input
           type='text'
           placeholder='title'
           id='title'
           value={title}
-          onChange={onMutate}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <input
@@ -128,14 +87,14 @@ const CreatNewPost = () => {
           placeholder='summary'
           id='summary'
           value={summary}
-          onChange={onMutate}
+          onChange={(e) => setSummary(e.target.value)}
         />
 
         <input
           type='file'
           // id='image'
-          name='image'
-          onChange={handleimg}
+          name='file'
+          onChange={(e) => setFiles(e.target.files)}
           accept='.jpg,.png,.jpeg'
         />
 
@@ -144,10 +103,10 @@ const CreatNewPost = () => {
           className='quill'
           theme='snow'
           id='content'
-          value={Content}
+          value={content}
           modules={modules}
           formats={formats}
-          onChange={handleChange}
+          onChange={(e) => setContent(e)}
         />
         <button className='create-post button-28'>Create post</button>
       </form>
