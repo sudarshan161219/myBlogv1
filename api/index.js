@@ -1,5 +1,5 @@
 const express = require('express')
-const multer  = require('multer')
+const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const app = express();
 const cors = require('cors')
@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 const userModel = require('./models/user');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-
+const fs = require('fs')
 
 
 
@@ -95,8 +95,15 @@ app.post('/logout', (req, res) => {
     res.cookie('jwtT', '').status(200).json({ success: true });
 })
 
-app.post('/post', upload.single('file'),  (req, res) => {
-      res.json({files:req.file})
+app.post('/post', upload.single('file'), (req, res) => {
+    const { originalname, path } = req.file
+    const parts = originalname.split('.')
+    const ext = parts[parts.length - 1]
+    const newPath = path+'.'+ext
+    fs.renameSync(path,  newPath)
+
+    
+    res.json({ext })
 })
 
 
