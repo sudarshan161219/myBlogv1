@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
+import {Navigate} from 'react-router-dom'
+
 
 const modules = {
   toolbar: [
@@ -43,6 +45,7 @@ const CreatNewPost = () => {
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,14 +61,32 @@ const CreatNewPost = () => {
     setContent("");
     setFiles("");
 
-    const response = await fetch("http://localhost:4000/post", {
+
+    try {
+     const response = await fetch("http://localhost:4000/post", {
       method: "POST",
       body: data,
+      credentials: 'include'
     });
+    if(response.status === 200){
+      toast.success(`success fully created new post`, {
+        position: toast.POSITION.TOP_RIGHT
+    });
+      setRedirect(true)
+    }else{
+      toast.error(`Opps!!, something went Wrong`, {
+        position: toast.POSITION.TOP_RIGHT
+    });
+    }
+    } catch (error) {
+      console.log(error);
+    }
 
-    const dataJson = await response.json();
-    console.log(dataJson);
   };
+
+  if(redirect){
+    return <Navigate to={'/'} />
+  }
 
   return (
     <main>
