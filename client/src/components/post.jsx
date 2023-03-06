@@ -1,19 +1,20 @@
 import React from "react";
+import {Link} from 'react-router-dom'
 import {format} from  'date-fns'
 
 
 const post = ({ post }) => {
-  const { summary, title, cover, content , createdAt, author} = post;
+  const {_id , summary, title, cover, content , createdAt, author} = post;
 
   return (
     <>
       <div className='post'>
-        <div className='image'>
+        <Link className='image' to={`/post/${_id}`}>
           <img
-            src={`../../../api/${cover}`}
+            src={`http://localhost:4000/${cover}`}
             alt='img'
           />
-        </div>
+        </Link>
 
         <div className='texts'>
           <div>{title}</div>

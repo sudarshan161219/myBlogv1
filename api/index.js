@@ -26,7 +26,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
-
+app.use("/uploads", express.static(__dirname + '/uploads'))
 
 
 // data coming from Client --> src --> components --> register.jsx
@@ -48,25 +48,25 @@ app.post('/register', async (req, res) => {
 // checking users username and password from database 
 app.post('/login', async (req, res) => {
     try {
-        
+
         const { username, password } = req.body
         const userDoc = await userModel.findOne({ username })
         const passOk = bcrypt.compareSync(password, userDoc.password)
-         const userOk = username === userDoc.username
+        const userOk = username === userDoc.username
 
 
-        if (!passOk  || !userOk)  {
-          return  res.status(400).json(' Username or Password dose not match please try again')
-        } 
+        if (!passOk) {
+            return res.status(400).json(' Username or Password dose not match please try again')
+        }
 
-    
- 
+
+
         // if(!userOk) {
         //     return res.status(400).json('bad user credentials')
         // }
-        
 
-                        // user logged in
+
+        // user logged in
         //  jwt.sign({ username, id: userDoc._id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1d'}, (err, token) => {
         //         if (err) throw err;
         //         res.cookie('token', token).status(200).json({
@@ -75,14 +75,14 @@ app.post('/login', async (req, res) => {
         //         });
         //     })
 
-            // const otherUsers = userModel.User.filter(person => person.username !== userDoc.username)
-            // const currentUser = {... userDoc, refreshToken}
-            const accessToken = jwt.sign({ username, id: userDoc._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300s' })
+        // const otherUsers = userModel.User.filter(person => person.username !== userDoc.username)
+        // const currentUser = {... userDoc, refreshToken}
+        const accessToken = jwt.sign({ username, id: userDoc._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300s' })
 
-            const refreshToken = jwt.sign({ username, id: userDoc._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+        const refreshToken = jwt.sign({ username, id: userDoc._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
-            res.cookie('jwtT', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).json({ success: true });
-        
+        res.cookie('jwtT', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).status(200).json({ success: true });
+
     } catch (error) {
         console.log(error);
     }
@@ -110,32 +110,40 @@ app.post('/post', upload.single('file'), async (req, res) => {
     const parts = originalname.split('.')
     const ext = parts[parts.length - 1]
     const newPath = path + '.' + ext
-   fs.renameSync(path, newPath)
+    fs.renameSync(path, newPath)
 
-   const { jwtT } = req.cookies
-   jwt.verify(jwtT, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
-    if (err) throw err;
-    const { title, summary, content } = req.body
-    const postDoc = await Post.create({
-        title,
-        summary,
-        content,
-        cover: newPath,
-        author: decoded.id
+    const { jwtT } = req.cookies
+    jwt.verify(jwtT, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+        if (err) throw err;
+        const { title, summary, content } = req.body
+        const postDoc = await Post.create({
+            title,
+            summary,
+            content,
+            cover: newPath,
+            author: decoded.id
+        })
+        res.json({ postDoc }).status(200).json({ success: true });
     })
-    res.json({postDoc}).status(200).json({ success: true });
-})
 
 
 
-   
+
 })
 
 
 app.get('/post', async (req, res) => {
-const posts = await Post.find().populate('author', ['username'])
-
+    const posts = await Post.find().populate('author', ['username'])
+        .sort({ createdAt: -1 })
+        .limit(20)
     res.json(posts)
+})
+
+
+app.get('/post/:id', async (req, res) => {
+    const { id } = req.params
+    const postDoc = await Post.findById(id).populate('author', ['username'])
+    res.json(postDoc)
 })
 
 const start = async () => {

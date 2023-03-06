@@ -20,7 +20,7 @@ function fetchData() {
       }
     }
 
-    console.log(posts);
+ 
     // const response = await  fetch( `https://api.weatherapi.com/v1/forecast.json?key=d6f8c23cf7664a70b8b154605221012&q=${query}&days=5&aqi=yes&alerts=yes`)
 
     // const info = await response.json()
