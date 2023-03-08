@@ -126,9 +126,6 @@ app.post('/post', upload.single('file'), async (req, res) => {
         res.json({ postDoc }).status(200).json({ success: true });
     })
 
-
-
-
 })
 
 
@@ -144,6 +141,41 @@ app.get('/post/:id', async (req, res) => {
     const { id } = req.params
     const postDoc = await Post.findById(id).populate('author', ['username'])
     res.json(postDoc)
+})
+
+
+app.put('/post', upload.single('file'), async (req, res) => {
+    let newFile = null
+    if (req.file) {
+        const { originalname, path } = req.file
+        const parts = originalname.split('.')
+        const ext = parts[parts.length - 1]
+        newFile = path + '.' + ext
+        fs.renameSync(path, newPath)
+    }
+
+    const { jwtT } = req.cookies
+    jwt.verify(jwtT, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+
+
+        if (err) throw err;
+        const { title, summary, content, id } = req.body
+        const postDoc = await Post.findById(id)
+        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(decoded.id)
+
+        if (!isAuthor) {
+            return res.status(400).json('Opps!!, something went Wrong')
+        }
+        await postDoc.update({
+            title,
+            summary,
+            content,
+            cover: newFile ? newFile : postDoc.cover
+        })
+
+    })
+    res.json('ok')
+
 })
 
 const start = async () => {
